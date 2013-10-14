@@ -1,7 +1,8 @@
 App = {
   width: 800,
   height: 600,
-  gridSize: 3
+  gridSize: 3,
+  allPrizeColors: ["#4183c4", "#c80000", "#007b00"]
 };
 App.Models = {};
 
@@ -52,9 +53,8 @@ App.Models = {};
         hero.y < prize.y + prize.size
        )
     {
-      alert("You got it! You got the prize!");
+      hero.prizes.push(prize);
       currentRoom.prize = null;
-      alert("Sorry, but that's all there is to do right now. :(");
     }
 
     if (hero.y < 0 && currentRoom.north.isPassable) {
@@ -110,38 +110,6 @@ App.Models = {};
     }
   };
 
-  var LevelMatrix = function(spawnPoint) {
-    this.rows = [];
-
-    var prize = new App.Models.Prize(spawnPoint);
-
-    for (var y = 0; y < App.gridSize; y++) {
-      row = [];
-      for (var x = 0; x < App.gridSize; x++) {
-        var hasPrize = (x === prize.roomX && y === prize.roomY);
-        row[x] = new App.Models.Room(x, y, hasPrize ? prize : null);
-      }
-      this.rows[y] = row;
-    }
-
-    this.findRoom = function(x, y) {
-      return this.rows[y][x];
-    };
-  };
-
-  var getRandomCoordinates = function() {
-    var x = App.getRandomNumber(0, App.gridSize - 1)
-      , y = App.getRandomNumber(0, App.gridSize - 1);
-
-    return { x: x, y: y };
-  };
-
-  App.getRandomNumber = function(min, max) {
-    var min = min || 0
-      , max = max || $scope.maximum;
-    return Math.floor(Math.random() * (max - min + 1) + min);
-  }
-
   App.start = function() {
     var canvas = document.getElementById("canvas")
       , c = canvas.getContext("2d");
@@ -150,9 +118,8 @@ App.Models = {};
     hero.x = (App.width - hero.size) / 2;
     hero.y = (App.height - hero.size) / 2;
 
-    var spawnPoint = getRandomCoordinates();
-    level = new LevelMatrix(spawnPoint);
-
+    var spawnPoint = App.getRandomCoordinates();
+    level = new App.Models.LevelMatrix(spawnPoint);
     currentRoom = level.findRoom(spawnPoint.x, spawnPoint.y);
 
     setInterval(loop, INTERVAL);

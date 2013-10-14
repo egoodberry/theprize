@@ -2,15 +2,12 @@ App.Models.Prize = function(spawnPoint) {
   this.x = App.getRandomNumber(10, App.width);
   this.y = App.getRandomNumber(10, App.height);
 
-  this.color = '#4183c4';
+  this.color = App.allPrizeColors.pop();
   this.size = 15;
 
   var getRoomCoordinates = function() {
     var coordinates = { x: null, y: null };
-    do {
-      coordinates.x = App.getRandomNumber(0, App.gridSize - 1);
-      coordinates.y = App.getRandomNumber(0, App.gridSize - 1);
-    }
+    do { coordinates = App.getRandomCoordinates(); }
     while (coordinates.x === spawnPoint.x && coordinates.y === spawnPoint.y);
     return coordinates;
   };
