@@ -5,8 +5,19 @@ App.Models.Prize = function(spawnPoint) {
   this.color = '#4183c4';
   this.size = 15;
 
-  this.roomX = App.getRandomNumber(0, App.gridSize - 1);
-  this.roomY = App.getRandomNumber(0, App.gridSize - 1);
+  var getRoomCoordinates = function() {
+    var coordinates = { x: null, y: null };
+    do {
+      coordinates.x = App.getRandomNumber(0, App.gridSize - 1);
+      coordinates.y = App.getRandomNumber(0, App.gridSize - 1);
+    }
+    while (coordinates.x === spawnPoint.x && coordinates.y === spawnPoint.y);
+    return coordinates;
+  };
+
+  var room = getRoomCoordinates();
+  this.roomX = room.x;
+  this.roomY = room.y;
 
   this.draw = function(context) {
     context.beginPath();

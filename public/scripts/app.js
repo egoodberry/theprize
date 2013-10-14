@@ -52,8 +52,8 @@ App.Models = {};
         hero.y < prize.y + prize.size
        )
     {
-      currentRoom.prize = null;
       alert("You got it! You got the prize!");
+      currentRoom.prize = null;
       alert("Sorry, but that's all there is to do right now. :(");
     }
 
